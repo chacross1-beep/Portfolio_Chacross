@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/utils/cn";
+import { SearchModal } from "@/components/search/SearchModal";
 import { SITE } from "@/utils/constants";
 import { copy } from "@/utils/copy";
 
@@ -22,6 +24,7 @@ interface HeaderProps {
 export function Header({ variant = "default" }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const isOverlay = variant === "overlay" && !scrolled;
 
@@ -49,34 +52,34 @@ export function Header({ variant = "default" }: HeaderProps) {
           isOverlay ? "px-6 md:px-10 lg:px-14" : "container-premium"
         )}
       >
-        <Link
-          href="/"
-          className={cn(
-            "font-heading text-lg font-bold tracking-tight",
-            isOverlay ? "text-white" : "text-[#F5F5F5]"
-          )}
-          data-cursor
-        >
-          {isOverlay ? (
-            <LogoBars />
-          ) : (
-            <>
-              CM<span className="text-blue-500">.</span>
-            </>
-          )}
+        <Link href="/" className="block shrink-0" data-cursor>
+          <Image
+            src={SITE.logo}
+            alt={SITE.name}
+            className="h-8 md:h-9 w-auto object-contain"
+            width={160}
+            height={40}
+            priority
+          />
         </Link>
 
         {isOverlay ? (
           <div className="flex items-center gap-6 md:gap-8">
-            <button
-              type="button"
-              className="lg:hidden flex flex-col gap-2 p-1"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label={copy.nav.menu}
-            >
-              <span className="block w-6 h-px bg-white" />
-              <span className="block w-6 h-px bg-white" />
-            </button>
+            <div className="flex items-center gap-4 lg:hidden">
+              <SearchButton
+                onClick={() => setSearchOpen(true)}
+                className="text-white/80 hover:text-white"
+              />
+              <button
+                type="button"
+                className="flex flex-col gap-2 p-1"
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label={copy.nav.menu}
+              >
+                <span className="block w-6 h-px bg-white" />
+                <span className="block w-6 h-px bg-white" />
+              </button>
+            </div>
 
             <nav className="hidden lg:flex items-center gap-8">
               <button
@@ -89,14 +92,10 @@ export function Header({ variant = "default" }: HeaderProps) {
                 <span className="block w-6 h-px bg-white" />
                 <span className="block w-6 h-px bg-white" />
               </button>
-              <Link
-                href="#"
-                className="text-white/80 hover:text-white transition-colors"
-                aria-label={copy.nav.search}
-                data-cursor
-              >
-                <SearchIcon />
-              </Link>
+              <SearchButton
+                onClick={() => setSearchOpen(true)}
+                className="text-white/80 hover:text-white"
+              />
             </nav>
 
             <Link
@@ -120,6 +119,10 @@ export function Header({ variant = "default" }: HeaderProps) {
                   {item.label}
                 </Link>
               ))}
+              <SearchButton
+                onClick={() => setSearchOpen(true)}
+                className="text-[#F5F5F5]/60 hover:text-white"
+              />
             </nav>
 
             <Link
@@ -130,12 +133,17 @@ export function Header({ variant = "default" }: HeaderProps) {
               {copy.nav.letsTalk}
             </Link>
 
-            <button
-              type="button"
-              className="lg:hidden flex flex-col gap-1.5 p-2"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label={copy.nav.menu}
-            >
+            <div className="flex items-center gap-3 lg:hidden">
+              <SearchButton
+                onClick={() => setSearchOpen(true)}
+                className="text-[#F5F5F5]/60 hover:text-white"
+              />
+              <button
+                type="button"
+                className="flex flex-col gap-1.5 p-2"
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label={copy.nav.menu}
+              >
               <span
                 className={cn(
                   "block w-6 h-px bg-white transition-all",
@@ -154,7 +162,8 @@ export function Header({ variant = "default" }: HeaderProps) {
                   menuOpen && "-rotate-45 -translate-y-2"
                 )}
               />
-            </button>
+              </button>
+            </div>
           </>
         )}
       </div>
@@ -187,18 +196,29 @@ export function Header({ variant = "default" }: HeaderProps) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
 }
 
-function LogoBars() {
+function SearchButton({
+  onClick,
+  className,
+}: {
+  onClick: () => void;
+  className?: string;
+}) {
   return (
-    <svg width="32" height="24" viewBox="0 0 32 24" fill="white" aria-hidden>
-      <rect x="0" y="2" width="4" height="20" />
-      <rect x="8" y="6" width="4" height="16" />
-      <rect x="16" y="0" width="4" height="24" />
-      <rect x="24" y="4" width="4" height="18" />
-    </svg>
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn("transition-colors", className)}
+      aria-label={copy.search.openLabel}
+      data-cursor
+    >
+      <SearchIcon />
+    </button>
   );
 }
 

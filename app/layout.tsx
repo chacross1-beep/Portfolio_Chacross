@@ -66,6 +66,11 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: SITE.favicon,
+    shortcut: SITE.favicon,
+    apple: SITE.favicon,
+  },
 };
 
 export default function RootLayout({

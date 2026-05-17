@@ -6,8 +6,8 @@ export const SITE = {
   description:
     "Portfolio premium de Chacross Mafuala — designer graphique et motion designer. Branding, motion design, UI/UX et expériences visuelles cinématiques.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://chacrossmafuala.vercel.app",
-  email: "hello@chacrossmafuala.com",
-  whatsapp: "+243000000000",
+  email: "info@chacrossmafuala.com",
+  whatsapp: "+243810717198",
   social: {
     facebook: "https://facebook.com/chacrossmafuala",
     instagram: "https://instagram.com/chacrossmafuala",
@@ -16,6 +16,8 @@ export const SITE = {
     linkedin: "https://linkedin.com/in/chacrossmafuala",
   },
   showreel: "https://youtu.be/n2PJYteTjKo?si=rPgUF-ZXiEFQu9YR",
+  logo: "/LOGO_CHAC-M2.svg",
+  favicon: "/LOGO_MINIATURE.svg",
 } as const;
 
 export const CATEGORY_LABELS: Record<ProjectCategory, string> = {

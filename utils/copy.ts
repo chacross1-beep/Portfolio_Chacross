@@ -63,6 +63,15 @@ export const copy = {
     send: "Envoyer le message",
     success: "Message envoyé avec succès !",
     error: "Erreur — réessayez plus tard.",
+    notConfigured:
+      "Formulaire indisponible — configurez Supabase dans .env.local ou contactez-nous par WhatsApp / e-mail.",
+  },
+  search: {
+    title: "Rechercher un projet",
+    placeholder: "Titre, catégorie, mot-clé…",
+    empty: "Aucun projet trouvé.",
+    close: "Fermer",
+    openLabel: "Ouvrir la recherche",
   },
   footer: {
     tagline:

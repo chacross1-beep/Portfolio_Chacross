@@ -26,13 +26,15 @@ export function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isSupabaseConfigured()) {
+      setStatus("error");
+      return;
+    }
     setStatus("loading");
     try {
-      if (isSupabaseConfigured()) {
-        const supabase = createClient();
-        const { error } = await supabase.from("contact_messages").insert(form);
-        if (error) throw error;
-      }
+      const supabase = createClient();
+      const { error } = await supabase.from("contact_messages").insert(form);
+      if (error) throw error;
       setStatus("success");
       setForm({ name: "", email: "", message: "" });
     } catch {
@@ -109,7 +111,11 @@ export function Contact() {
               <p className="text-green-400 text-sm text-center">{copy.contact.success}</p>
             )}
             {status === "error" && (
-              <p className="text-red-400 text-sm text-center">{copy.contact.error}</p>
+              <p className="text-red-400 text-sm text-center">
+                {!isSupabaseConfigured()
+                  ? copy.contact.notConfigured
+                  : copy.contact.error}
+              </p>
             )}
           </form>
         </div>
